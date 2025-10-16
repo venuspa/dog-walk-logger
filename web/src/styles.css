@@ -62,10 +62,12 @@ header.header { position: sticky; top: 0; z-index: 1000; background: #ffffffcc; 
 
 /* Header responsivo em telas pequenas */
 @media (max-width: 639px) {
-  .header__inner { flex-wrap: wrap; gap: 8px; }
+  /* Mantém tudo em uma única linha para evitar que o seletor de idioma desça */
+  .header__inner { flex-wrap: nowrap; gap: 8px; }
   .brand { font-size: 16px; }
   .brand__emoji { font-size: 20px; }
-  .lang-switch { order: 3; width: 100%; justify-content: flex-start; }
+  /* Centraliza o seletor de idioma entre marca e menu */
+  .lang-switch { order: 0; flex: 1 1 auto; justify-content: center; width: auto; }
   .profile-menu .btn-chip { padding: 6px 8px; }
   .lang-toggle { padding: 6px 8px; }
 }
