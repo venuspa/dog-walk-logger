@@ -26,6 +26,11 @@ body {
 
 .app { display: flex; flex-direction: column; min-height: 100%; }
 
+/* Estabiliza altura em navegadores móveis (barra de endereço dinâmica) */
+@supports (height: 100dvh) {
+  .app { min-height: 100dvh; }
+}
+
 .container { width: 100%; max-width: 960px; margin: 0 auto; padding: 16px; }
 
 header.header { background: #ffffffcc; backdrop-filter: saturate(110%) blur(4px); border-bottom: 1px solid var(--border); }
@@ -82,7 +87,7 @@ main { flex: 1; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.tabs { display: flex; gap: 8px; margin-top: 8px; }
+.tabs { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 .btn-tab { border-radius: 999px; padding: 8px 12px; }
 .btn-tab--active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .btn-tab:hover { filter: brightness(1.03); }
