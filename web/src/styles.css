@@ -6,6 +6,8 @@
   --accent: #ff8f00; /* orange */
   --muted: #64748b; /* slate-500 */
   --border: #e2e8f0; /* slate-200 */
+  --sidebar-w: 280px;
+  --sidebar-w-collapsed: 72px;
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,7 +35,7 @@ body {
 
 .container { width: 100%; max-width: 960px; margin: 0 auto; padding: 16px; }
 
-header.header { background: #ffffffcc; backdrop-filter: saturate(110%) blur(4px); border-bottom: 1px solid var(--border); }
+header.header { position: sticky; top: 0; z-index: 1000; background: #ffffffcc; backdrop-filter: saturate(110%) blur(4px); border-bottom: 1px solid var(--border); }
 .header__inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; }
 .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 18px; }
 .brand__emoji { font-size: 22px; }
@@ -50,7 +52,54 @@ header.header { background: #ffffffcc; backdrop-filter: saturate(110%) blur(4px)
 .btn-danger { background: #dc2626; color: #fff; border-color: #dc2626; }
 .btn-danger:hover { filter: brightness(1.05); }
 
+/* Variante discreta para botões (ex.: seletor de idioma) */
+.btn-ghost { background: transparent; border-color: transparent; }
+.btn-ghost:hover { border-color: var(--border); transform: none; }
+
+/* Ocultar elementos em telas pequenas */
+.hide-sm { display: none; }
+@media (min-width: 640px) { .hide-sm { display: inline; } }
+
+/* Header responsivo em telas pequenas */
+@media (max-width: 639px) {
+  .header__inner { flex-wrap: wrap; gap: 8px; }
+  .brand { font-size: 16px; }
+  .brand__emoji { font-size: 20px; }
+  .lang-switch { order: 3; width: 100%; justify-content: flex-start; }
+  .profile-menu .btn-chip { padding: 6px 8px; }
+  .lang-toggle { padding: 6px 8px; }
+}
+
 main { flex: 1; }
+
+/* Sidebar (mobile-first: off-canvas) */
+.sidebar { position: fixed; left: 0; top: 0; height: 100%; width: clamp(260px, 84vw, 360px); background: var(--card); border-right: 1px solid var(--border); border-radius: 0; box-shadow: 0 8px 24px rgba(16,24,40,0.18); padding: calc(12px + env(safe-area-inset-top)) 12px 12px 12px; display: block; z-index: 10000; transform: translateX(-100%); transition: transform .22s ease; }
+.sidebar--open { transform: translateX(0); }
+.sidebar__overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(2px); z-index: 9999; }
+.sidebar__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.sidebar__brand { font-weight: 600; }
+.sidebar__toggle { font-size: 18px; }
+.sidebar__nav { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.sidebar__item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--text); text-decoration: none; border: 1px solid transparent; }
+.sidebar__item:hover { background: #f8fafc; border-color: var(--border); }
+.sidebar__label { white-space: nowrap; }
+.sidebar__footer { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+.sidebar__user { display: flex; align-items: center; gap: 10px; }
+.sidebar__avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); object-fit: cover; display: inline-flex; align-items: center; justify-content: center; }
+.sidebar__userName { font-weight: 600; }
+.sidebar__userEmail { font-size: 12px; color: var(--muted); }
+.sidebar--collapsed { width: var(--sidebar-w-collapsed); }
+.sidebar--collapsed .sidebar__label, .sidebar--collapsed .sidebar__brand { display: none; }
+
+/* Desktop/tablet: sidebar fixa e conteúdo deslocado */
+@media (min-width: 1024px) {
+  .sidebar { left: 12px; top: 12px; height: calc(100% - 24px); width: var(--sidebar-w); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(16,24,40,0.08); padding: 12px; transform: none; z-index: 900; }
+  /* Garante que a largura recolhida prevaleça em desktop */
+  .sidebar.sidebar--collapsed { width: var(--sidebar-w-collapsed); }
+  .sidebar__overlay { display: none; }
+  body.has-sidebar main { margin-left: calc(var(--sidebar-w) + 12px); }
+  body.has-sidebar.sidebar-collapsed main { margin-left: calc(var(--sidebar-w-collapsed) + 12px); }
+}
 
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: 0 4px 24px rgba(16,24,40,0.04); }
 .card:hover { box-shadow: 0 8px 28px rgba(16,24,40,0.08); transform: translateY(-1px); }
@@ -87,10 +136,11 @@ main { flex: 1; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
-.tabs { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.tabs { display: none; }
 .btn-tab { border-radius: 999px; padding: 8px 12px; }
 .btn-tab--active { background: var(--primary); color: #fff; border-color: var(--primary); }
 .btn-tab:hover { filter: brightness(1.03); }
+@media (max-width: 639px) { .tabs { display: none; } }
 
 .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
 /* Duas colunas em telas médias e grandes para evitar overflow */
@@ -102,6 +152,8 @@ main { flex: 1; }
 .card { overflow: hidden; }
 .card canvas { max-width: 100% !important; height: auto; }
 .chart { width: 100%; max-width: 100%; }
+
+/* (removido) Drawer móvel antigo – substituído pelo modo off-canvas da Sidebar */
 
 .card--walk .card__photo { width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); }
 .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
@@ -126,6 +178,9 @@ main { flex: 1; }
 .toast--success { border-color: #d1fae5; background: #ecfdf5; color: #065f46; }
 .toast--error { border-color: #fee2e2; background: #fef2f2; color: #7f1d1d; }
 .toast--info { border-color: var(--border); }
+
+/* Body sem rolagem quando drawer aberto */
+body.no-scroll { overflow: hidden; }
 
 /* Spinner */
 .spinner { display: inline-flex; align-items: center; gap: 8px; }

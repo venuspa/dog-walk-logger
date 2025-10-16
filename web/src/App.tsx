@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Header from './components/Header'
+import Sidebar from './components/Sidebar'
 import WalkForm from './components/WalkForm'
 import type { WalkEntry } from './components/WalkForm'
 import HistoryDashboard from './components/HistoryDashboard'
@@ -69,6 +70,7 @@ function App() {
 
   return (
     <div className="app">
+      <Sidebar />
       <Header />
       <nav className="tabs container" aria-label="sections">
         <button className={`btn btn-tab ${tab === 'register' ? 'btn-tab--active' : ''}`} onClick={goRegister} aria-label={t('tabs.register')}>📝 {t('tabs.register')}</button>
