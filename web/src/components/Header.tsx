@@ -1,10 +1,8 @@
 import { useI18n } from '../useI18n'
-import { useAuth } from '../useAuth'
 import { useEffect } from 'react'
 
 export default function Header() {
   const { t, lang, setLang } = useI18n()
-  const { user, logout } = useAuth()
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { /* noop */ } }
