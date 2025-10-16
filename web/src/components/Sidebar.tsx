@@ -4,7 +4,7 @@ import { useAuth } from '../useAuth'
 
 export default function Sidebar() {
   const { t } = useI18n()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -95,6 +95,16 @@ export default function Sidebar() {
             )}
           </div>
         )}
+        <button
+          type="button"
+          className="btn btn-chip btn-danger"
+          title={t('profile.menu.logout')}
+          aria-label={t('profile.menu.logout')}
+          onClick={() => { logout(); if (!isDesktop()) setOpen(false) }}
+          style={{ marginTop: 8 }}
+        >
+          {collapsed ? '⎋' : t('profile.menu.logout')}
+        </button>
       </div>
     </aside>
     </>
