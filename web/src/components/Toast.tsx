@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react'
-import type { Toast, ToastContextType } from './toastContext'
+import type { Toast } from './toastContext'
 import { ToastContext } from './toastContext'
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {

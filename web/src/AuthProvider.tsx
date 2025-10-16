@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { AuthContext, type AuthContextType } from './authContext'
-import { basicHash, loadUsers, setCurrentUserEmail, findUserByEmail, getCurrentUserEmail, saveUsers, addDog, type User, type DogProfile } from './auth'
+import { basicHash, loadUsers, setCurrentUserEmail, findUserByEmail, getCurrentUserEmail, saveUsers, addDog, type User } from './auth'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
